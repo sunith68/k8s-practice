@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<title>Home</title>
+	<link rel="stylesheet" type="text/css" href="/style.css">
+</head>
+<body>
+	<div class='head'>Add a Record</div>
+	<form action='/add' method='POST' class='formcss'>
+			<div><%= messages%></div>
+			<label>Roll number</label>
+			<input type="number" placeholder="Enter Your Roll number" name="rollno" value='<%= rollno %>' required ><br>
+		 	<label>Name</label>
+		 	<input type="text" placeholder="Enter Your Name" name="name" value='<%= name %>' required><br>
+		 	<button class='actionbtn' type="submit">Add</button>
+		 	<button class="actionbtn"><a href="/">Home</a></button>
+	</form>
+</body>

@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<title>NITT</title>
+	<link rel="stylesheet" type="text/css" href="/style.css">
+</head>
+<body>
+	<div class='head'>Search</div>
+	<div class='instr'>Enter a roll number to be searched</div>
+	<input type="text" id='searchbar'>
+	<div id= 'sresults'></div>
+	<div id='card'></div>
+	<button id="addbtn1"><a href="/add">Add New Record</a></button>
+	<script type="text/javascript">
+		var searchbar=document.getElementById('searchbar');
+		var sresults=document.getElementById('sresults');
+		var carddom=document.getElementById('card');
+		var updatedom= document.getElementById('updatebtn')
+		searchbar.addEventListener('keyup',search1);
+
+		function search1(e){
+			let temp = e.target.value;
+			if(temp==''){return 0}
+			for (var i = 0; i < temp.length; i++) {
+				if(temp[i]>=0&&temp[i]<=9){
+					continue
+				}
+				else{
+					return searchname(e);
+				}
+			}
+			return searchrno(e);
+		}
+		function searchrno(e){
+			var string=[];	
+			var search=e.target.value;
+			var data={
+				search: search
+			};
+			var xhr=new XMLHttpRequest();		
+			xhr.open("POST","http://localhost:3000/search/rollno");			
+			xhr.onreadystatechange=function(){
+				if(xhr.readyState==4){
+					string=xhr.response;
+					var result=JSON.parse(string);
+					var output ='';
+					for(var i in result){
+						output += `<div class='pingr' >`+ result[i].rollno+'</div>';	
+				 	}
+				 	sresults.innerHTML=output;	
+				 	if(output!=''){clickr();}
+				  	
+				}				
+			}
+			xhr.setRequestHeader('Content-Type', 'application/json;charset=UTF-8');
+			xhr.send(JSON.stringify(data));
+
+			
+		}
+		function clickr(){
+		var allpingr=document.querySelectorAll('.pingr');
+			allpingr.forEach(function(c){
+				c.addEventListener('click',(e)=>{
+					var string2;
+					var search=e.target.innerText;
+					let data={
+					search: search
+					};
+					var xhr2 = new window.XMLHttpRequest();
+		            xhr2.open('POST', 'http://localhost:3000/search/rollno/card');
+		            xhr2.onreadystatechange=function(){
+			            if(xhr2.readyState==4){
+			            	string2=xhr2.response;
+			            	var str=JSON.parse(string2);
+			            	card(str.rollno,str.name);
+			            }
+			        }
+		            xhr2.setRequestHeader('Content-Type', 'application/json;charset=UTF-8')
+		            xhr2.send(JSON.stringify(data));
+				})
+			})
+		}
+		function searchname(e){
+			var string=[];	
+			var search=e.target.value;
+			var data={
+				search: search
+			};
+			var xhr=new XMLHttpRequest();		
+			xhr.open("POST","http://localhost:3000/search/name");			
+			xhr.onreadystatechange=function(){
+				if(xhr.readyState==4){
+					string=xhr.response;
+					var result=JSON.parse(string);
+					var output ='';
+					for(var i in result){
+				   		output += `<div class="pingn">`+result[i].name+'</div>';				      
+				  }
+				  sresults.innerHTML=output;	
+				  if(output!=''){clickn();}			
+				}
+				
+			}
+			xhr.setRequestHeader('Content-Type', 'application/json;charset=UTF-8');
+			xhr.send(JSON.stringify(data));
+		}
+		function clickn(){
+			var allpingn=document.querySelectorAll('.pingn');
+				allpingn.forEach(function(c){
+					c.addEventListener('click',(e)=>{
+						var string2;
+						var search=e.target.innerText;
+						let data={
+						search: search
+						};
+						var xhr2 = new window.XMLHttpRequest();
+			            xhr2.open('POST', 'http://localhost:3000/search/name/card');
+			            xhr2.onreadystatechange=function(){
+				            if(xhr2.readyState==4){
+				            	string2=xhr2.response;
+				            	var str=JSON.parse(string2);
+				            	card(str.rollno,str.name);
+				            }
+				        }
+			            xhr2.setRequestHeader('Content-Type', 'application/json;charset=UTF-8')
+			            xhr2.send(JSON.stringify(data));
+					})
+				})
+		}
+		function card(rollno,name){
+			sresults.innerHTML='';
+			carddom.innerHTML='';
+			carddom.innerHTML=`<div class='cardcss'><span>Roll number: </span><span id="crno">`+rollno+`</span><div>Name: `
+			+name+`</div></br><button id='deletebtn'>Delete</button> <button id='updatebtn'>`
+			+ `<a href='/update/`+rollno+`'> Update</button></div>`;
+
+			console.log(carddom.innerHTML);
+			var deletedom = document.getElementById('deletebtn');
+			deletedom.addEventListener('click',()=>{
+				var xhr = new window.XMLHttpRequest();
+				var deletelink='http://localhost:3000/delete/'+document.getElementById('crno').innerText;
+		        xhr.open('POST', deletelink, true)
+		        xhr.setRequestHeader('Content-Type', 'application/json;charset=UTF-8');
+		        xhr.send();	
+		        carddom.innerHTML='';	
+			})
+			
+		}
+
+	</script>
+
+</body>
+</html>

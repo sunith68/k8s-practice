@@ -1,0 +1,76 @@
+*{
+	text-align: center;
+	margin: 0;
+	padding: 0;
+}
+.head{
+	font-size: 25px;
+	margin-top: 10px;
+	margin-bottom: 10px;
+}
+.instr{
+	font-size: 15px;
+
+	margin-bottom: 10px;
+}
+input{
+	text-align :left;
+}
+#searchbar{
+	margin: auto;
+	width:150px;
+}
+#searchresults{
+	margin: auto;
+	width: 150px;
+}
+.pingr, .pingn{
+	margin: auto;
+	text-align :left;
+	width: 150px;
+	border-bottom: 1px solid black;
+	border-left: 1px solid black;
+	border-right: 1px solid black;
+	padding: 2px 1px;
+}
+.pingr:hover, .pingn:hover{
+	cursor: pointer;
+	background:#1affff;
+}
+.cardcss{
+	margin: auto;
+	margin-top: 20px;
+	margin-bottom: 20px;
+	width:40vw;
+}
+.cardcss div{
+	padding:5px;
+}
+#deletebtn:hover{
+	cursor: pointer;
+	background: #ff3333;
+}
+a{
+	text-decoration: none;
+}
+#addbtn1{
+	padding: 3px;
+	margin-top: 40px;
+}
+.formcss {
+	display: block;
+	width: 60vw;
+	margin:auto;
+}
+.formcss div,label,input{
+	padding: 2px;
+	margin-top: 8px;
+}
+.actionbtn{
+	width: 60px;
+	padding: 4px;
+	margin-top: 10px;
+}
+.actionbtn:hover{
+	cursor:pointer;
+}
