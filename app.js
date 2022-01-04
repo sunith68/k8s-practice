@@ -3,9 +3,14 @@ const mongoose = require('mongoose');
 const students = require('./models/student')
 const app = express();
 
-mongoose.connect('mongodb://localhost/students', {
-  useNewUrlParser: true, useUnifiedTopology: true, useCreateIndex: true
-})
+mongoose.connect('mongodb://mongodb:27017/students', {
+  useNewUrlParser: true, useUnifiedTopology: true
+}). then(()=> console.log("connected"))
+.catch(err => console.log(err))
+
+const db = mongoose.connection;
+db.on('error', error => console.log(error.message));
+db.once('open', () => console.log('connected to database'));
 
 app.use(express.urlencoded({ extended: false }));
 app.use(express.json());
@@ -16,12 +21,10 @@ app.use(express.static(__dirname + '/public'));
 app.get('/',function(req,res){
 	// res.redirect('/add');
 	res.render('home');
-
 })
 
 app.post('/search/rollno',async (req,res)=>{
 	let q=req.body.search;
-	// console.log('"',q,'"');
 	if(q!=undefined||q!=' '){
 	var items=await students.find( {rollno:{$regex: q ,$options:'i'}} ).limit(10);}
 	console.log(items);
@@ -31,7 +34,6 @@ app.post('/search/rollno',async (req,res)=>{
 
 app.post('/search/name',async (req,res)=>{
 	let q=req.body.search;
-	console.log(q,'q');
 	if(q!=undefined||q!=''){
 	var items=await students.find( {name:{$regex: q ,$options:'i'}} ).limit(10);}
 	console.log(items);
@@ -41,7 +43,6 @@ app.post('/search/name',async (req,res)=>{
 
 app.post('/search/rollno/card',async(req,res)=>{
 	let q=req.body.search;
-	console.log(q,'q');
 	if(q!=undefined||q!=''){
 	var items=await students.findOne( {rollno:q} ).limit(10);}
 	console.log(items);
@@ -51,7 +52,6 @@ app.post('/search/rollno/card',async(req,res)=>{
 
 app.post('/search/name/card',async(req,res)=>{
 	let q=req.body.search;
-	console.log(q,'q');
 	if(q!=undefined||q!=''){
 	var items=await students.findOne( {name:q} );}
 	console.log(items);
